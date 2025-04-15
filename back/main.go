@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	db.DBConnection()
+	db.Get()
 	cfg := config.Get()
 
 	router := gin.Default()

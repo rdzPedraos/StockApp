@@ -33,8 +33,8 @@ type StockRatingService struct {
 }
 
 func Init() *StockRatingService {
-	baseURL := config.Get().Services.Stock.API_URL
-	apiKey := config.Get().Services.Stock.API_KEY
+	baseURL := config.Services.Stock.API_URL
+	apiKey := config.Services.Stock.API_KEY
 
 	if baseURL == "" || apiKey == "" {
 		log.Fatal("API URL or API Key is not set")

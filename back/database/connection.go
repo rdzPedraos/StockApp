@@ -2,7 +2,7 @@ package db
 
 import (
 	"app/config"
-	"app/utils"
+	"app/models"
 	"log"
 	"sync"
 
@@ -18,27 +18,28 @@ var (
 func Get() *gorm.DB {
 	once.Do(func() {
 		db = initializeDB()
+		AutoMigrate(db)
 	})
 
 	return db
 }
 
 func initializeDB() *gorm.DB {
-	var (
-		cfg = config.Get()
-		err error
-	)
+	var err error
 
 	conn, err := gorm.Open(
-		postgres.Open(cfg.DB.GetDSN()),
+		postgres.Open(config.DataBase.GetDSN()),
 		&gorm.Config{},
 	)
 
 	if err != nil {
 		log.Fatal("failed to connect database", err)
+		//panic(err)
 	}
 
-	conn.AutoMigrate(utils.Schemas...)
-
 	return conn
+}
+
+func AutoMigrate(db *gorm.DB) {
+	db.AutoMigrate(models.Schemas...)
 }

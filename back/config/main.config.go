@@ -8,8 +8,9 @@ import (
 )
 
 type Config struct {
-	DB     dbConfig
-	Server serverConfig
+	DB       dbConfig
+	Server   serverConfig
+	Services servicesConfig
 }
 
 var once sync.Once
@@ -29,7 +30,8 @@ func load() Config {
 	}
 
 	return Config{
-		DB:     getDBConfig(),
-		Server: getServerConfig(),
+		DB:       getDBConfig(),
+		Server:   getServerConfig(),
+		Services: getServicesConfig(),
 	}
 }

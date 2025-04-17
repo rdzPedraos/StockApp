@@ -12,7 +12,7 @@ func (c *APIClient) Get(path string, result interface{}) error {
 
 func (c *APIClient) GetWithQueryParams(path string, result interface{}, queryParams map[string]string) error {
 	path = c.addQueryParams(path, queryParams)
-	return c.doRequest(http.MethodGet, path, nil, result)
+	return c.Get(path, result)
 }
 
 func (c *APIClient) Post(path string, body interface{}, result interface{}) error {

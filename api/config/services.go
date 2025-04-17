@@ -6,8 +6,8 @@ import (
 )
 
 type serviceConfig struct {
-	API_URL string
-	API_KEY string
+	ApiUrl string
+	ApiKey string
 }
 
 type servicesConfig struct {
@@ -16,7 +16,7 @@ type servicesConfig struct {
 
 var Services = servicesConfig{
 	Stock: serviceConfig{
-		API_URL: helper.Coalesce(os.Getenv("STOCK_API_URL"), ""),
-		API_KEY: helper.Coalesce(os.Getenv("STOCK_API_KEY"), ""),
+		ApiUrl: helper.Coalesce(os.Getenv("STOCK_API_URL"), ""),
+		ApiKey: helper.Coalesce(os.Getenv("STOCK_API_KEY"), ""),
 	},
 }

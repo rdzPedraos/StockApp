@@ -1,8 +1,7 @@
 package stockRating
 
 import (
-	"fmt"
-	"net/url"
+	"log"
 	"time"
 )
 
@@ -19,38 +18,37 @@ type getAllItem struct {
 }
 
 type getAllResponse struct {
-	items    []getAllItem
-	nextPage string
+	Items    []getAllItem `json:"items"`
+	NextPage string       `json:"next_page"`
 }
 
 func (s *service) GetAll() ([]getAllItem, error) {
+	log.Default().Println("Executing StockRating.GetAll method")
+
 	allItems := []getAllItem{}
 	endpoint := "/swechallenge/list"
-	nextPage := ""
+	queryParams := map[string]string{
+		"next_page": "",
+	}
 
 	for {
-		requestURL := endpoint
-
-		if nextPage != "" {
-			encodedNextPage := url.QueryEscape(nextPage)
-			requestURL = fmt.Sprintf("%s?next_page=%s", endpoint, encodedNextPage)
-		}
-
 		var response getAllResponse
-		err := s.client.Get(requestURL, &response)
+		err := s.client.GetWithQueryParams(endpoint, &response, queryParams)
+
 		if err != nil {
-			return nil, fmt.Errorf("error al obtener datos de ratings de acciones: %w", err)
+			return nil, err
 		}
 
 		// Agregar los ratings a la colección total
-		allItems = append(allItems, response.items...)
+		allItems = append(allItems, response.Items...)
 
-		if response.nextPage == "" {
+		if response.NextPage == "" {
 			break
 		}
 
-		nextPage = response.nextPage
+		queryParams["next_page"] = response.NextPage
 	}
 
+	log.Default().Println("StockRating.GetAll method executed successfully")
 	return allItems, nil
 }

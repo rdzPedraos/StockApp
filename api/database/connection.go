@@ -1,4 +1,4 @@
-package db
+package database
 
 import (
 	"app/config"
@@ -15,7 +15,7 @@ var (
 	once sync.Once
 )
 
-func Get() *gorm.DB {
+func DB() *gorm.DB {
 	once.Do(func() {
 		db = initializeDB()
 		AutoMigrate(db)

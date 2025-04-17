@@ -1,7 +1,7 @@
 package config
 
 import (
-	"app/utils"
+	"app/lib/helper"
 	"fmt"
 	"os"
 )
@@ -25,5 +25,5 @@ var DataBase = dbConfig{
 	User:     os.Getenv("DB_USER"),
 	Password: os.Getenv("DB_PASSWORD"),
 	DBName:   os.Getenv("DB_NAME"),
-	SSLMode:  utils.Coalesce(os.Getenv("DB_SSLMODE"), "verify-full"),
+	SSLMode:  helper.Coalesce(os.Getenv("DB_SSLMODE"), "verify-full"),
 }

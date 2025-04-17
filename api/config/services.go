@@ -1,7 +1,7 @@
 package config
 
 import (
-	"app/utils"
+	"app/lib/helper"
 	"os"
 )
 
@@ -16,7 +16,7 @@ type servicesConfig struct {
 
 var Services = servicesConfig{
 	Stock: serviceConfig{
-		API_URL: utils.Coalesce(os.Getenv("STOCK_API_URL"), ""),
-		API_KEY: utils.Coalesce(os.Getenv("STOCK_API_KEY"), ""),
+		API_URL: helper.Coalesce(os.Getenv("STOCK_API_URL"), ""),
+		API_KEY: helper.Coalesce(os.Getenv("STOCK_API_KEY"), ""),
 	},
 }

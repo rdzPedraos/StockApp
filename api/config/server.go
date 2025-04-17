@@ -1,7 +1,7 @@
 package config
 
 import (
-	"app/utils"
+	"app/lib/helper"
 	"os"
 )
 
@@ -11,6 +11,6 @@ type serverConfig struct {
 }
 
 var Server = serverConfig{
-	Host: utils.Coalesce(os.Getenv("HOST"), "localhost"),
-	Port: utils.Coalesce(os.Getenv("PORT"), "3000"),
+	Host: helper.Coalesce(os.Getenv("HOST"), "localhost"),
+	Port: helper.Coalesce(os.Getenv("PORT"), "3000"),
 }

@@ -1,19 +1,21 @@
 package ratings
 
 import (
-	"fmt"
+	"log"
 	"slices"
 	"strings"
 )
 
-func Parse(value string) (Rating, error) {
+func Parse(value string) Rating {
 	value = strings.Replace(value, " by", "", 1)
 	rating, ok := stringToRating[value]
 
 	if !ok {
-		return "", fmt.Errorf("rating no válido: %s", value)
+		log.Printf("Advertencia: enum.Rating no válido: %s", value)
+		return ""
 	}
-	return rating, nil
+
+	return rating
 }
 
 func (r Rating) Label() string {

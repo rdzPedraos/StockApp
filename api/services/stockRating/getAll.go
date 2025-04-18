@@ -5,27 +5,27 @@ import (
 	"time"
 )
 
-type getAllItem struct {
+type GetAllItem struct {
 	Ticker     string    `json:"ticker"`
-	TargetFrom string    `json:"target_from"`
-	TargetTo   string    `json:"target_to"`
 	Company    string    `json:"company"`
 	Action     string    `json:"action"`
 	Brokerage  string    `json:"brokerage"`
+	TargetFrom string    `json:"target_from"`
+	TargetTo   string    `json:"target_to"`
 	RatingFrom string    `json:"rating_from"`
 	RatingTo   string    `json:"rating_to"`
 	Time       time.Time `json:"time"`
 }
 
 type getAllResponse struct {
-	Items    []getAllItem `json:"items"`
+	Items    []GetAllItem `json:"items"`
 	NextPage string       `json:"next_page"`
 }
 
-func (s *service) GetAll() ([]getAllItem, error) {
+func (s *service) GetAll() ([]GetAllItem, error) {
 	log.Default().Println("Executing StockRating.GetAll method")
 
-	allItems := []getAllItem{}
+	allItems := []GetAllItem{}
 	endpoint := "/swechallenge/list"
 	queryParams := map[string]string{
 		"next_page": "",

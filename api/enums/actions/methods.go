@@ -1,16 +1,17 @@
 package actions
 
 import (
-	"fmt"
+	"log"
 	"strings"
 )
 
-func Parse(value string) (Action, error) {
+func Parse(value string) Action {
 	value = strings.Replace(value, " by", "", 1)
 	action, ok := stringToAction[value]
 
 	if !ok {
-		return "", fmt.Errorf("action no válida: %s", value)
+		log.Printf("Advertencia: enum.Action no válida: %s", value)
+		return ""
 	}
-	return action, nil
+	return action
 }

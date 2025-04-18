@@ -1,6 +1,7 @@
 package main
 
 import (
+	"app/cmd"
 	"app/config"
 	"fmt"
 
@@ -8,6 +9,11 @@ import (
 )
 
 func main() {
+	// only if any command not was executed, run the server
+	if cmd.Execute() {
+		return
+	}
+
 	router := gin.Default()
 
 	router.GET("/ping", func(c *gin.Context) {

@@ -1,7 +1,7 @@
 package loadStock
 
 import (
-	"app/database"
+	"app/database/connection"
 	"app/enums/actions"
 	"app/enums/ratings"
 	"app/lib/helper"
@@ -45,7 +45,7 @@ func processAndSaveData(items items) ResultStats {
 
 // preloadEntities carga los tickers y brokers existentes de la base de datos
 func preloadEntities() (map[string]bool, map[string]uint) {
-	db := database.DB()
+	db := connection.DB
 
 	var existingTickers []models.Ticker
 	var existingBrokers []models.Broker
@@ -105,7 +105,7 @@ func saveTickers(tickers []models.Ticker) int {
 		return 0
 	}
 
-	db := database.DB()
+	db := connection.DB
 	result := db.Clauses(clause.OnConflict{
 		Columns:   []clause.Column{{Name: "id"}},
 		DoUpdates: clause.AssignmentColumns([]string{"company"}),
@@ -120,7 +120,7 @@ func saveBrokers(brokers []models.Broker) int {
 		return 0
 	}
 
-	db := database.DB()
+	db := connection.DB
 	result := db.Clauses(clause.OnConflict{
 		Columns:   []clause.Column{{Name: "name"}},
 		DoNothing: true,
@@ -132,7 +132,7 @@ func saveBrokers(brokers []models.Broker) int {
 // saveRecommendations guarda las recomendaciones en la base de datos
 func saveRecommendations(items items, brokerMap map[string]uint) int {
 	const batchSize = 100
-	db := database.DB()
+	db := connection.DB
 	total := 0
 
 	var batch []models.Recommendation

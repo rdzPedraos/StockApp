@@ -22,7 +22,7 @@ const searchTicker = ref('');
             />
         </header>
         <main class="max-w-[1800px] mx-auto px-4 py-8">
-            <slot ></slot>
+            <slot></slot>
         </main>
     </div>
 </template>

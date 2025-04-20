@@ -40,7 +40,7 @@ const columns: TableColumn<Ticker>[] = [
                 hold: 'neutral',
             }[sentiment];
 
-            return h(UBadge, { class: 'capitalize', variant: 'outline', color }, sentiment);
+            return h(UBadge, { class: 'capitalize', variant: 'outline', color }, () => sentiment);
         },
     },
     {

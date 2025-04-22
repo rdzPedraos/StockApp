@@ -1,5 +1,9 @@
 package resources
 
+import (
+	"sync"
+)
+
 // TypedResource es una interfaz genérica para recursos con tipo específico
 type TypedResource[T any] interface {
 	Format(data T) interface{}
@@ -10,12 +14,21 @@ func FormatWith[T any, R TypedResource[T]](resource R, data T) interface{} {
 }
 
 func FormatArrayWith[T any, R TypedResource[T]](resource R, data []T) []interface{} {
-	items := make([]interface{}, 0, len(data))
-
-	for _, item := range data {
-		newItem := resource.Format(item)
-		items = append(items, newItem)
+	if len(data) == 0 {
+		return []interface{}{}
 	}
 
+	items := make([]interface{}, len(data))
+	var wg sync.WaitGroup
+
+	for i, item := range data {
+		wg.Add(1)
+		go func(idx int, elem T) {
+			defer wg.Done()
+			items[idx] = resource.Format(elem)
+		}(i, item)
+	}
+
+	wg.Wait()
 	return items
 }

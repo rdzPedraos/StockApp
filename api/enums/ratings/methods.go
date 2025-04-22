@@ -21,12 +21,12 @@ func Parse(value string) Rating {
 func (r Rating) Label() string {
 	switch {
 	case slices.Contains(positiveRatings, r):
-		return "Positive"
+		return "positive"
 	case slices.Contains(cautiousRatings, r):
-		return "Cautious"
+		return "cautious"
 	case slices.Contains(negativeRatings, r):
-		return "Negative"
+		return "negative"
 	default:
-		return "Neutral"
+		return "neutral"
 	}
 }

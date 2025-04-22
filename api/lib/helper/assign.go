@@ -2,6 +2,7 @@ package helper
 
 import (
 	"reflect"
+	"strconv"
 )
 
 func validateValue[T any](value *T, bypassDefault bool) bool {
@@ -48,4 +49,21 @@ func Coalesce[T any](values ...T) T {
 	}
 
 	return *new(T)
+}
+
+func Clamp[T Ordered](value T, min T, max T) T {
+	if value < min {
+		return min
+	}
+
+	if value > max {
+		return max
+	}
+
+	return value
+}
+
+func ClampString(value string, min int, max int) int {
+	valueInt, _ := strconv.Atoi(value)
+	return Clamp(valueInt, min, max)
 }

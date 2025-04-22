@@ -1,7 +1,10 @@
 package resources
 
 import (
+	"app/config"
+	"app/integrations/financial"
 	"app/models"
+	"log"
 	"time"
 )
 
@@ -14,19 +17,18 @@ type stockListItem struct {
 	Ticker             string              `json:"ticker"`
 	Company            string              `json:"company"`
 	Price              float64             `json:"price"`
-	Logo               string              `json:"logo"`
 	MarketCap          float64             `json:"market_cap"`
 	LastRecommendation stockRecommendation `json:"last_recommendation"`
+	Logo               string              `json:"logo"`
 }
 
 // StockListResource implementa la interfaz TypedResource para formatear listas de stocks
 type StockListResource struct{}
 
-// FormatTyped formatea un ticker específico
+// Format formatea un ticker específico
 func (s StockListResource) Format(ticker models.Ticker) interface{} {
+	// Preparar la recomendación
 	lastRecommendation := stockRecommendation{}
-
-	// Verificar si hay recomendaciones disponibles
 	if len(ticker.Recommendations) > 0 {
 		lastRecommendation = stockRecommendation{
 			Time:           ticker.Recommendations[0].Time,
@@ -34,12 +36,38 @@ func (s StockListResource) Format(ticker models.Ticker) interface{} {
 		}
 	}
 
+	price := make(chan float64, 1)
+	marketCap := make(chan float64, 1)
+
+	go s.GetPrice(ticker, price)
+	go s.GetMarketCap(ticker, marketCap)
+
 	return stockListItem{
 		Ticker:             ticker.ID,
 		Company:            ticker.Company,
-		Price:              0, // Actualizar con datos reales si están disponibles
-		Logo:               "https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png",
-		MarketCap:          0, // Actualizar con datos reales si están disponibles
+		Price:              <-price,
+		MarketCap:          <-marketCap,
 		LastRecommendation: lastRecommendation,
+		Logo:               config.Server.Url + "/api/tickers/" + ticker.ID + "/logo",
 	}
+}
+
+func (s StockListResource) GetPrice(ticker models.Ticker, ch chan float64) {
+	price, err := financial.Service().GetPrice(ticker.ID)
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	ch <- price
+}
+
+func (s StockListResource) GetMarketCap(ticker models.Ticker, ch chan float64) {
+	marketCap, err := financial.Service().GetMarketCap(ticker.ID)
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	ch <- marketCap
 }

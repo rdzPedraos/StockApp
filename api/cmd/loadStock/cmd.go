@@ -1,7 +1,7 @@
 package loadStock
 
 import (
-	"app/services/stockRating"
+	"app/integrations/stockRating"
 	"log"
 	"time"
 

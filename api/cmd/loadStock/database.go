@@ -4,9 +4,9 @@ import (
 	"app/database/connection"
 	"app/enums/actions"
 	"app/enums/ratings"
+	"app/integrations/stockRating"
 	"app/lib/helper"
 	"app/models"
-	"app/services/stockRating"
 
 	"gorm.io/gorm/clause"
 )

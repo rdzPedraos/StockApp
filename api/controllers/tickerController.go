@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"app/integrations/financial"
 	"app/lib/helper"
 	"app/lib/paginate"
 	"app/models"
@@ -34,4 +35,17 @@ func (c *TickerController) List(ctx *gin.Context) {
 
 func (c *TickerController) Show(ctx *gin.Context) {
 
+}
+
+func (c *TickerController) GetCompanyLogo(ctx *gin.Context) {
+	ticker := ctx.Param("id")
+
+	logoBase64, contentType, err := financial.Service().GetCompanyLogo(ticker)
+	if err != nil {
+		ctx.JSON(404, gin.H{"error": "Company logo not found"})
+		return
+	}
+
+	ctx.Header("Content-Type", contentType)
+	ctx.Data(200, contentType, *logoBase64)
 }

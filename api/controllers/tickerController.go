@@ -20,7 +20,7 @@ func (c *TickerController) List(ctx *gin.Context) {
 
 	query := func(db *gorm.DB) *gorm.DB {
 		return db.Preload("Recommendations", func(db *gorm.DB) *gorm.DB {
-			return db.Order("recommendations.time DESC").Limit(1)
+			return db.Order("recommendations.time DESC")
 		})
 	}
 

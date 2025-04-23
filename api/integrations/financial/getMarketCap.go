@@ -1,7 +1,9 @@
 package financial
 
 import (
+	"app/lib/cache"
 	"log"
+	"time"
 )
 
 type MarketCapResponse struct {
@@ -11,16 +13,27 @@ type MarketCapResponse struct {
 }
 
 func (s *service) GetMarketCap(ticker string) (float64, error) {
-	log.Default().Println("Executing Financial.GetMarketCap method")
-	endpoint := "/api/v3/market-capitalization/" + ticker + "?apikey=" + s.apiKey
+	var marketCap float64
 
-	var result []MarketCapResponse
-	err := s.client.Get(endpoint, &result)
+	err := cache.Once(
+		"financial.GetMarketCap."+ticker,
+		1*time.Hour,
+		&marketCap,
+		func() (*float64, error) {
+			log.Default().Println("Executing Financial.GetMarketCap method")
+			endpoint := "/api/v3/market-capitalization/" + ticker + "?apikey=" + s.apiKey
 
-	if err != nil {
-		return 0, err
-	}
+			var apiResult []MarketCapResponse
+			err := s.client.Get(endpoint, &apiResult)
 
-	log.Default().Println("Financial.GetMarketCap method executed successfully")
-	return result[0].MarketCap, nil
+			if err != nil {
+				return nil, err
+			}
+
+			log.Default().Println("Financial.GetMarketCap method executed successfully")
+			value := apiResult[0].MarketCap
+			return &value, nil
+		})
+
+	return marketCap, err
 }

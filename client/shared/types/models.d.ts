@@ -7,3 +7,10 @@ export interface Ticker {
     last_review: string;
     sentiment: string;
 }
+
+export interface Meta {
+    page: number;
+    total: number;
+    last_page: number;
+    per_page: number;
+}

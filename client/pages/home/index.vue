@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import AllTickerTable from './partials/AllTickerTable.vue';
+</script>
+
 <template>
     <div>
         <section class="mb-4">

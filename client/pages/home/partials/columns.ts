@@ -55,7 +55,7 @@ export const getColumns = (): TableColumn<Ticker>[] => {
             accessorKey: 'price',
             header: 'Price',
             cell: ({ row }) => {
-                const price: number = row.getValue('price');
+                const price: number = row.original.company.price;
 
                 const formattedPrice = new Intl.NumberFormat('en-US', {
                     style: 'currency',
@@ -69,7 +69,7 @@ export const getColumns = (): TableColumn<Ticker>[] => {
             accessorKey: 'market_cap',
             header: 'Market Cap',
             cell: ({ row }) => {
-                const marketCap: number = row.getValue('market_cap');
+                const marketCap: number = row.original.company.marketCap;
 
                 const formattedMarketCap = new Intl.NumberFormat('en-US', {
                     style: 'currency',

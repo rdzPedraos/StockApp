@@ -22,3 +22,7 @@ export const formatDate = (date: string) => {
         year: 'numeric',
     });
 };
+
+export const formatPercentage = (percentage: number) => {
+    return percentage.toFixed(2) + '%';
+};

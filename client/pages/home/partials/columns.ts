@@ -19,12 +19,12 @@ export const getColumns = (): TableColumn<Ticker>[] => {
             accessorKey: 'ticker',
             header: 'Ticker / Company',
             cell: ({ row }) => {
-                const { company, logo, ticker } = row.original;
+                const { company, ticker } = row.original;
 
                 return h(TickerCell, {
                     ticker,
-                    company,
-                    logo,
+                    company: company.companyName,
+                    logo: company.image,
                 });
             },
         },

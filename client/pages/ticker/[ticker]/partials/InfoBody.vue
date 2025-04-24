@@ -10,16 +10,18 @@
         <StockInfoCard
             title="Marketcap"
             info="Capitalization of the company"
-            :value="ticker.market_cap"
+            :value="ticker.company.marketCap"
         />
 
-        <StockInfoCard title="Volume" info="Volume of the company" :value="40818" />
-        <StockInfoCard title="Total Supply" info="Total supply of the company" :value="40818" />
+        <StockInfoCard title="Volume" info="Volume of the company" :value="ticker.company.volume" />
+
         <StockInfoCard
-            title="Circulating Supply"
-            info="Circulating supply of the company"
-            :value="40818"
+            title="Beta"
+            info="Beta works as a measure of the stock's volatility relative to the market, if the beta is 1, the stock is as volatile as the market. If the beta is greater than 1, the stock is more volatile than the market. If the beta is less than 1, the stock is less volatile than the market."
+            :value="ticker.company.beta"
         />
+
+        <StockInfoCard title="Sector" info="Sector of the company" :value="ticker.company.sector" />
     </div>
 </template>
 

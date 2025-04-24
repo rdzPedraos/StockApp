@@ -17,7 +17,7 @@
             ></div>
         </div>
 
-        <ChartStock v-if="symbol" :symbol="symbol" />
+        <ChartStock v-if="stock.ticker" :symbol="stock.ticker" :broker="stock.company.exchange" />
     </div>
 </template>
 
@@ -31,7 +31,7 @@ const scrollContainer = ref<HTMLElement | null>(null);
 
 const route = useRoute();
 const store = useTickerStore();
-const symbol = computed(() => store.data.ticker);
+const stock = computed(() => store.data);
 
 // Función para manejar el evento de scroll
 const handleScroll = () => {

@@ -9,7 +9,9 @@
             </UTooltip>
         </div>
 
-        <p class="text-sm font-mono font-bold">{{ formatPrice(props.value) }}</p>
+        <p class="text-sm font-mono font-bold">
+            {{ typeof props.value === 'number' ? formatPrice(props.value) : props.value }}
+        </p>
     </div>
 </template>
 
@@ -17,6 +19,6 @@
 const props = defineProps<{
     title: string;
     info: string;
-    value: number;
+    value: number | string;
 }>();
 </script>

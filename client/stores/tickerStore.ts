@@ -1,14 +1,12 @@
 import { defineStore } from 'pinia';
-import type { Recommendation } from '~/shared/types/models';
+import type { CompanyData, Recommendation } from '~/shared/types/models';
 import api from '~/utils/axios';
 
 type TickerData = {
     ticker: string;
-    company: string;
-    logo: string;
-    price: number;
-    market_cap: number;
+    company: CompanyData;
     recommendations: Recommendation[];
+    advice: string;
 };
 
 export const useTickerStore = defineStore('ticker', () => {

@@ -10,6 +10,7 @@
 <script setup lang="ts">
 const props = defineProps<{
     symbol: string;
+    broker: string;
 }>();
 
 const container = ref<HTMLElement | null>(null);
@@ -22,11 +23,11 @@ onMounted(() => {
     script.innerHTML = `
         {
           "autosize": true,
-          "symbol": "${props.symbol}USD",
+          "symbol": "${props.broker}:${props.symbol}",
           "interval": "D",
           "timezone": "Etc/UTC",
           "theme": "light",
-          "style": "3",
+          "style": "1",
           "locale": "en",
           "allow_symbol_change": true,
           "support_host": "https://www.tradingview.com"

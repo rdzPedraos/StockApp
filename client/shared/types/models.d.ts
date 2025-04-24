@@ -1,6 +1,6 @@
 export interface Ticker {
     ticker: string;
-    company: string;
+    company: CompanyData;
     price: number;
     logo: string;
     market_cap: number;
@@ -25,4 +25,19 @@ export interface Recommendation {
     target_from: number;
     target_to: number;
     broker: string;
+}
+
+export interface CompanyData {
+    companyName: string;
+    price: number;
+    marketCap: number;
+    beta: number;
+    change: number;
+    changePercentage: number;
+    volume: number;
+    exchange: string;
+    sector: string;
+    industry: string;
+    website: string;
+    image: string;
 }

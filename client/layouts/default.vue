@@ -7,11 +7,9 @@ const searchTicker = ref('');
 <template>
     <div>
         <header class="flex items-center gap-4 border-b-2 border-gray-100 bg-white p-4">
-            <AppLogo />
-
-            <nav class="flex items-center gap-4">
-                <RouterLink to="/">Home</RouterLink>
-            </nav>
+            <RouterLink to="/">
+                <AppLogo />
+            </RouterLink>
 
             <UInput
                 v-model="searchTicker"

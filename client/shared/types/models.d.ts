@@ -14,3 +14,15 @@ export interface Meta {
     last_page: number;
     per_page: number;
 }
+
+export interface Recommendation {
+    time: string;
+    action: string;
+    rating_from: string;
+    rating_from_txt: string;
+    rating_to: string;
+    rating_to_txt: string;
+    target_from: number;
+    target_to: number;
+    broker: string;
+}

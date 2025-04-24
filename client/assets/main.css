@@ -5,3 +5,8 @@ button,
 [role='button'] {
     cursor: pointer;
 }
+
+@utility beautify-scroll {
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+}

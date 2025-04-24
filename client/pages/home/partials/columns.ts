@@ -3,7 +3,7 @@ import type { Ticker } from '~/shared/types/models';
 
 import { h } from 'vue';
 import { UBadge } from '#components';
-import TickerCell from './TickerCell.vue';
+import TickerCell from '~/components/TickerInfo.vue';
 
 export const getColumns = (): TableColumn<Ticker>[] => {
     return [

@@ -21,5 +21,4 @@ func tickerRoutes(group *gin.RouterGroup) {
 
 	group.GET("", tickerController.List)
 	group.GET("/:id", tickerController.Show)
-	group.GET("/:id/logo", tickerController.GetCompanyLogo)
 }

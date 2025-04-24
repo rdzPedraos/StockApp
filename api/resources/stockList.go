@@ -1,21 +1,16 @@
 package resources
 
 import (
-	"app/config"
 	"app/integrations/financial"
 	"app/models"
-	"log"
 	"time"
 )
 
 type stockListItem struct {
-	Ticker     string    `json:"ticker"`
-	Company    string    `json:"company"`
-	Price      float64   `json:"price"`
-	MarketCap  float64   `json:"market_cap"`
-	Logo       string    `json:"logo"`
-	LastReview time.Time `json:"last_review"`
-	Sentiment  string    `json:"sentiment"`
+	Ticker     string                        `json:"ticker"`
+	Company    financial.CompanyDataResponse `json:"company"`
+	LastReview time.Time                     `json:"last_review"`
+	Sentiment  string                        `json:"sentiment"`
 }
 
 // StockListResource implementa la interfaz TypedResource para formatear listas de stocks
@@ -33,39 +28,15 @@ func (s StockListResource) Format(ticker models.Ticker) interface{} {
 		sentiment = ticker.Recommendations[0].RatingTo.Label()
 	}
 
-	price := make(chan float64, 1)
-	marketCap := make(chan float64, 1)
-
-	go s.GetPrice(ticker, price)
-	go s.GetMarketCap(ticker, marketCap)
-
 	return stockListItem{
 		Ticker:     ticker.ID,
-		Company:    ticker.Company,
-		Price:      <-price,
-		MarketCap:  <-marketCap,
+		Company:    s.GetCompanyData(ticker),
 		LastReview: lastReview,
 		Sentiment:  sentiment,
-		Logo:       config.Server.Url + "/api/tickers/" + ticker.ID + "/logo",
 	}
 }
 
-func (s StockListResource) GetPrice(ticker models.Ticker, ch chan float64) {
-	price, err := financial.Service().GetPrice(ticker.ID)
-
-	if err != nil {
-		log.Println(err)
-	}
-
-	ch <- price
-}
-
-func (s StockListResource) GetMarketCap(ticker models.Ticker, ch chan float64) {
-	marketCap, err := financial.Service().GetMarketCap(ticker.ID)
-
-	if err != nil {
-		log.Println(err)
-	}
-
-	ch <- marketCap
+func (s StockListResource) GetCompanyData(ticker models.Ticker) financial.CompanyDataResponse {
+	companyData, _ := financial.Service().GetCompanyData(ticker.ID)
+	return companyData
 }

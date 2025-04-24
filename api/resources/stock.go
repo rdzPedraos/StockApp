@@ -1,18 +1,16 @@
 package resources
 
 import (
-	"app/config"
 	"app/integrations/financial"
+	"app/integrations/gemini"
 	"app/models"
 )
 
 type stockItem struct {
-	Ticker          string        `json:"ticker"`
-	Company         string        `json:"company"`
-	Price           float64       `json:"price"`
-	MarketCap       float64       `json:"market_cap"`
-	Logo            string        `json:"logo"`
-	Recommendations []interface{} `json:"recommendations"`
+	Ticker          string                        `json:"ticker"`
+	Recommendations []interface{}                 `json:"recommendations"`
+	Company         financial.CompanyDataResponse `json:"company"`
+	Advice          string                        `json:"advice"`
 }
 
 // StockListResource implementa la interfaz TypedResource para formatear listas de stocks
@@ -20,28 +18,22 @@ type StockResource struct{}
 
 // Format formatea un ticker específico
 func (s StockResource) Format(ticker models.Ticker) interface{} {
-	price := make(chan float64, 1)
-	marketCap := make(chan float64, 1)
+	companyData := make(chan financial.CompanyDataResponse, 1)
+	stockAdvice := make(chan string, 1)
+	recommendations := ticker.Recommendations
 
-	go s.GetPrice(ticker, price)
-	go s.GetMarketCap(ticker, marketCap)
+	go func() {
+		company, _ := financial.Service().GetCompanyData(ticker.ID)
+		advice, _ := gemini.Service().GetInvestmentAdvice(ticker.ID, company, recommendations)
+
+		companyData <- company
+		stockAdvice <- advice
+	}()
 
 	return stockItem{
 		Ticker:          ticker.ID,
-		Company:         ticker.Company,
-		Price:           <-price,
-		MarketCap:       <-marketCap,
-		Logo:            config.Server.Url + "/api/tickers/" + ticker.ID + "/logo",
-		Recommendations: FormatArrayWith(RecommendationResource{}, ticker.Recommendations),
+		Company:         <-companyData,
+		Recommendations: FormatArrayWith(RecommendationResource{}, recommendations),
+		Advice:          <-stockAdvice,
 	}
-}
-
-func (s StockResource) GetPrice(ticker models.Ticker, ch chan float64) {
-	price, _ := financial.Service().GetPrice(ticker.ID)
-	ch <- price
-}
-
-func (s StockResource) GetMarketCap(ticker models.Ticker, ch chan float64) {
-	marketCap, _ := financial.Service().GetMarketCap(ticker.ID)
-	ch <- marketCap
 }

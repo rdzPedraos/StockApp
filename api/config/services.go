@@ -1,7 +1,6 @@
 package config
 
 import (
-	"app/lib/helper"
 	"os"
 )
 
@@ -13,15 +12,20 @@ type serviceConfig struct {
 type servicesConfig struct {
 	Stock     serviceConfig
 	Financial serviceConfig
+	Gemini    serviceConfig
 }
 
 var Services = servicesConfig{
 	Stock: serviceConfig{
-		ApiUrl: helper.Coalesce(os.Getenv("STOCK_API_URL"), ""),
-		ApiKey: helper.Coalesce(os.Getenv("STOCK_API_KEY"), ""),
+		ApiUrl: os.Getenv("STOCK_API_URL"),
+		ApiKey: os.Getenv("STOCK_API_KEY"),
 	},
 	Financial: serviceConfig{
-		ApiUrl: helper.Coalesce(os.Getenv("FINANCIAL_API_URL"), ""),
-		ApiKey: helper.Coalesce(os.Getenv("FINANCIAL_API_KEY"), ""),
+		ApiUrl: os.Getenv("FINANCIAL_API_URL"),
+		ApiKey: os.Getenv("FINANCIAL_API_KEY"),
+	},
+	Gemini: serviceConfig{
+		ApiKey: os.Getenv("GEMINI_API_KEY"),
+		ApiUrl: os.Getenv("GEMINI_API_URL"),
 	},
 }

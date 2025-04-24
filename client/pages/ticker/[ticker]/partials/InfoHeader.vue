@@ -8,7 +8,10 @@
         </div>
     </div>
 
-    <div v-else>
+    <div
+        v-else
+        class="sticky top-0 p-4 pb-6 bg-gradient-to-b from-gray-50 from-90% to-transparent z-50"
+    >
         <TickerInfo
             :ticker="ticker.ticker"
             :company="ticker.company.companyName"

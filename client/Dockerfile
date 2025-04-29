@@ -2,35 +2,35 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Instalar pnpm
+# Install pnpm
 RUN corepack enable && corepack prepare pnpm@10.8.1 --activate
 
-# Copiar archivos de dependencias
+# Copy dependencies
 COPY package.json pnpm-lock.yaml ./
 
-# Instalar dependencias
+# Install dependencies
 RUN pnpm install --frozen-lockfile
 
-# Copiar el resto del código
+# Copy the rest of the code
 COPY . .
 
-# Compilar la aplicación
+# Compile the application
 RUN pnpm build
 
-# Imagen final
+# Final image
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Instalar pnpm
-RUN corepack enable && corepack prepare pnpm@10.8.1 --activate
+# Install pnpm, for now, we don't need it
+#RUN corepack enable && corepack prepare pnpm@10.8.1 --activate
 
-# Copiar los archivos necesarios de la etapa de compilación
+# Copy the necessary files from the build stage
 COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/package.json ./package.json
 
-# Exponer el puerto
+# Expose the port
 EXPOSE 3000
 
-# Comando para ejecutar la aplicación
+# Command to run the application
 CMD ["node", ".output/server/index.mjs"] 

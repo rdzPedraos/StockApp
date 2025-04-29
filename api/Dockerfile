@@ -2,30 +2,33 @@ FROM golang:1.24-alpine AS builder
 
 WORKDIR /app
 
-# Copiar archivos de dependencias y descargarlas
+# Copy dependencies and download them
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copiar el resto del código
+# Copy the rest of the code
 COPY . .
 
-# Compilar la aplicación
+# Compile the application
+# CGO_ENABLED=0 is used to build a static binary, without dependencies on C libraries, better for alpine
+# GOOS=linux is used to build for Linux
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
 
-# Imagen final
+# Final image
 FROM alpine:3.19
 
 WORKDIR /app
 
-# Instalar dependencias necesarias
-RUN apk --no-cache add ca-certificates tzdata
+# Install necessary dependencies
+RUN apk --no-cache add \
+    # Certificates for SSL/TLS
+    ca-certificates \ 
+    # Timezone data
+    tzdata
 
-# Copiar el ejecutable compilado
+# Copy the compiled executable
 COPY --from=builder /app/main .
 COPY --from=builder /app/.env .
 
-# Exponer el puerto
-EXPOSE 8080
-
-# Comando para ejecutar la aplicación
+# Command to run the application
 CMD ["./main"] 

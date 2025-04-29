@@ -6,13 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RegisterApiRoutes(router *gin.RouterGroup) {
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
-
+func RegisterV1Routes(router *gin.RouterGroup) {
 	tickerRoutes(router.Group("/tickers"))
 }
 

@@ -31,5 +31,11 @@ func corsMiddleware() gin.HandlerFunc {
 }
 
 func registerRoutes(router *gin.Engine) {
-	routes.RegisterApiRoutes(router.Group("/api"))
+	router.GET("/ping", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "pong",
+		})
+	})
+
+	routes.RegisterV1Routes(router.Group("/"))
 }

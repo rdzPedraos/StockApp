@@ -24,14 +24,5 @@ export default defineNuxtConfig({
 
     vite: {
         plugins: [tailwindcss()],
-        server: {
-            proxy: {
-                '/back': {
-                    target: process.env.API_URL || 'http://localhost:3001',
-                    changeOrigin: true,
-                    rewrite: (path) => path.replace(/^\/back/, '/api'),
-                },
-            },
-        },
     },
 });

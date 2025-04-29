@@ -1,5 +1,9 @@
 # StockApp - Aplicación de Gestión de Inventario
 
+![image](https://github.com/user-attachments/assets/abc7e325-0b21-4f82-ab41-2c10124053ff)
+
+![image](https://github.com/user-attachments/assets/1625cc4e-9068-4fd8-a2dc-2e7207fdcf96)
+
 ## Descripción
 
 StockApp es una aplicación completa de gestión de inventario desarrollada como prueba técnica. Está diseñada con una arquitectura de microservicios que permite una gestión eficiente y escalable de productos, pedidos y gestión de stock.

@@ -16,12 +16,15 @@ type TickerController struct {
 
 func (c *TickerController) List(ctx *gin.Context) {
 	page := helper.ClampString(ctx.Query("page"), 1, 100)
-	perPage := helper.ClampString(ctx.Query("per_page"), 10, 100)
+	perPage := helper.ClampString(ctx.Query("per_page"), 5, 100)
+	search := ctx.Query("search")
 
 	query := func(db *gorm.DB) *gorm.DB {
-		return db.Preload("Recommendations", func(db *gorm.DB) *gorm.DB {
-			return db.Order("recommendations.time DESC")
-		})
+		return db.
+			Scopes(models.Ticker{}.SearchScope(search)).
+			Preload("Recommendations", func(db *gorm.DB) *gorm.DB {
+				return db.Order("recommendations.time DESC")
+			})
 	}
 
 	response := new(paginate.PaginateResolver[models.Ticker]).

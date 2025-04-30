@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-
-const searchTicker = ref('');
 </script>
 
 <template>
@@ -10,15 +8,8 @@ const searchTicker = ref('');
             <RouterLink to="/">
                 <AppLogo />
             </RouterLink>
-
-            <UInput
-                v-model="searchTicker"
-                class="block ml-auto"
-                icon="i-lucide-search"
-                size="xl"
-                placeholder="Search ticker"
-            />
         </header>
+
         <main class="max-w-[1800px] mx-auto px-4 py-8">
             <slot></slot>
         </main>
